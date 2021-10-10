@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- 配置文件路径在 主要是为了获取application.property的jdbc的连接值, 因为我这里是application.yml
+    不知道怎么获取，所以可以不要注释掉-->
+    <!--    <properties resource="application-dev.properties" />-->
+
+    <!--    defaultModelType="flat": flat,该模型只为每张表生成一个实体类，这个实体类包含表中所有的字段，这种模型最简单，推荐使用-->
+    <context id="mysqlgenerator" targetRuntime="MyBatis3" defaultModelType="flat" >
+
+        <!-- 生成的Java文件的编码-->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化java代码-->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码-->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <!--        mybatis的一些插件 写在这里了解，因为idea中有一个lombok插件@Data有其中某些插件的效果
+                    默认提供了get,set,hashcode,tostring方法-->
+
+        <!--        &lt;!&ndash;        这个插件用来给Java模型生成equals和hashcode方法&ndash;&gt;-->
+        <!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />-->
+
+        <!--        这个插件主要用来为生成的Java模型类添加序列化接口，并生成serialVersionUID字段；-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+        <!--        &lt;!&ndash;        这个插件用来在XXXExample类中生成大小写敏感的LIKE方法&ndash;&gt;-->
+        <!--        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />-->
+        <!--        &lt;!&ndash;        生成toString方法的插件&ndash;&gt;-->
+        <!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+
+        <!--        suppressAllComments:**阻止**生成注释，默认为false-->
+        <!--        suppressDate:**阻止**生成的注释包含时间戳，默认为false-->
+        <!--        有时候生成注释太多，看的眼花缭乱，所以可以设置不要注释-->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+
+        <!--数据库链接地址账号密码-->
+        <!--        <jdbcConnection driverClass="${jdbc.driver}"-->
+        <!--                        connectionURL="${jdbc.url}"-->
+        <!--                        userId="${jdbc.username}"-->
+        <!--                        password="${jdbc.password}">-->
+        <!--        </jdbcConnection>-->
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/iblog?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"
+                        userId="root"
+                        password="root">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!--
+              默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+                  true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
+              -->
+        <!--        <javaTypeResolver>-->
+        <!--            <property name="forceBigDecimals" value="false"/>-->
+        <!--        </javaTypeResolver>-->
+
+        <!-- 实体类生成的位置 -->
+        <javaModelGenerator targetPackage="com.klz.iblog.entity" targetProject="src/main/java">
+            <!--            只对MyBatis3有效，如果true就会使用构造方法入参，如果false就会使用setter方式。默认为false-->
+            <property name="constructorBased" value="false"/>
+            <!--            如果true，MBG会根据catalog和schema来生成子包。如果false就会直接用targetPackage属性。默认为false-->
+            <property name="enableSubPackages" value="false" />
+            <!--            该属性用来配置实体类属性是否可变，如果设置为true，那么constructorBased不管设置成什么，都会使用构造方法入参，并且不会生成setter方法。如果为false，实体类属性就可以改变。默认为false-->
+            <property name="immutable" value="false"/>
+            <!--            配置基础基类，可以注释掉-->
+            <!--            <property name="rootClass" value="com.common.code.entity.BaseEntity"/>-->
+            <!--         是否对数据库查询结果进行trim操作-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- *Mapper.xml 文件的位置 -->
+        <sqlMapGenerator targetPackage="mybatis/mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- Mapper 接口文件的位置 -->
+        <javaClientGenerator targetPackage="com.klz.iblog.mapper" targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 相关表的配置 alias="user"配置别名
+            一般代码生成器会生成两个实体类，其中一个是EntiityExample 一般用不到，可以设置为不生成-->
+<!--        <table tableName="users" domainObjectName="Users"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            &lt;!&ndash;            是否使用mysql表中列的名称,为false时是默认下划线转驼峰命名规则,true就是使用mysql数据库的字段&ndash;&gt;-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 使用自增长键&ndash;&gt;-->
+<!--            &lt;!&ndash;            <property name="my.isgen.usekeys" value="true"/>&ndash;&gt;-->
+<!--            &lt;!&ndash; 配置主键&ndash;&gt;-->
+<!--            &lt;!&ndash; <generatedKey column="id" sqlStatement="JDBC"/>&ndash;&gt;-->
+<!--        </table>-->
+
+
+        <table tableName="user" domainObjectName="User"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--            是否使用mysql表中列的名称,为false时是默认下划线转驼峰命名规则,true就是使用mysql数据库的字段-->
+            <property name="useActualColumnNames" value="false"/>
+            <!-- 使用自增长键-->
+            <!--            <property name="my.isgen.usekeys" value="true"/>-->
+            <!-- 配置主键-->
+            <!-- <generatedKey column="id" sqlStatement="JDBC"/>-->
+        </table>
+
+
+    </context>
+
+</generatorConfiguration>

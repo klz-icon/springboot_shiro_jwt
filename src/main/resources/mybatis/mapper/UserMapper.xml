@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.klz.iblog.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.klz.iblog.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="bgmusic" jdbcType="VARCHAR" property="bgmusic" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="updaeTime" jdbcType="DATE" property="updaetime" />
+    <result column="deleteTime" jdbcType="DATE" property="deletetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, email, avatar, bgmusic, status, createTime, updaeTime, deleteTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.klz.iblog.entity.User">
+    insert into user (id, username, password, 
+      email, avatar, bgmusic, 
+      status, createTime, updaeTime, 
+      deleteTime)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{bgmusic,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT}, #{createtime,jdbcType=DATE}, #{updaetime,jdbcType=DATE}, 
+      #{deletetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.klz.iblog.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="bgmusic != null">
+        bgmusic,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updaetime != null">
+        updaeTime,
+      </if>
+      <if test="deletetime != null">
+        deleteTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="bgmusic != null">
+        #{bgmusic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updaetime != null">
+        #{updaetime,jdbcType=DATE},
+      </if>
+      <if test="deletetime != null">
+        #{deletetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.klz.iblog.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="bgmusic != null">
+        bgmusic = #{bgmusic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="updaetime != null">
+        updaeTime = #{updaetime,jdbcType=DATE},
+      </if>
+      <if test="deletetime != null">
+        deleteTime = #{deletetime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.klz.iblog.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      bgmusic = #{bgmusic,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      createTime = #{createtime,jdbcType=DATE},
+      updaeTime = #{updaetime,jdbcType=DATE},
+      deleteTime = #{deletetime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--  根据用户名查询用户-->
+  <select id="selectUserByUsername" parameterType="java.lang.String" resultType="com.klz.iblog.entity.User">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+</mapper>
